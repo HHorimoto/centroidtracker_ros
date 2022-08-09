@@ -1,0 +1,2 @@
+int8 key
+std_msgs/Float32MultiArray value
