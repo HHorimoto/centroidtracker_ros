@@ -31,7 +31,7 @@ class CentroidtrackerRos(object):
         for (objectID, centroid) in objects.items():
             ctr = Ctr()
             ctr.key = objectID
-            ctr.value = centroid
+            ctr.value.data = centroid
             ctrs_list.append(ctr)
         ctrs.ctrs = ctrs_list
         self.publish.publish(ctrs)
