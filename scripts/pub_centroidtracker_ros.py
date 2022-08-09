@@ -29,6 +29,9 @@ class CentroidtrackerRos(object):
                 rects.append(bbox) 
         objects = self.ct.update(rects)
         for (objectID, centroid) in objects.items():
+            if objectID not in self.knownID:
+                self.knownID.append(objectID)
+                rospy.loginfo("## NEW OBJECT ##")
             ctr = Ctr()
             ctr.key = objectID
             ctr.value.data = centroid
