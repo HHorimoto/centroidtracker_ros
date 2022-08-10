@@ -9,10 +9,10 @@ from centroidtracker import CentroidTracker
 from centroidtracker_ros.msg import Ctr, Ctrs
 
 class CentroidtrackerRos(object):
-    def __init__(self, object_name, topic_darknet, topic_ct_ros='ct_ros', msg_wait=1.0):
+    def __init__(self, object_name, topic_darknet, max_disappeared, topic_ct_ros='ct_ros', msg_wait=1.0):
         self.darknet_msg = SensorMessageGetter(topic_darknet, BoundingBoxes, msg_wait)
         self.object_name = object_name
-        self.ct = CentroidTracker()
+        self.ct = CentroidTracker(maxDisappeared=max_disappeared)
         self.knownID = []
         self.publish = rospy.Publisher(topic_ct_ros, Ctrs, queue_size=10)
 
@@ -46,9 +46,10 @@ def main():
     # param
     object_name = rospy.get_param("~object_name")
     topic_darknet = rospy.get_param("~topic_darknet")
+    max_disappeared = rospy.get_param("~max_disappeared")
 
     rate = rospy.Rate(50)
-    ct_ros = CentroidtrackerRos(object_name, topic_darknet)
+    ct_ros = CentroidtrackerRos(object_name, topic_darknet, max_disappeared)
 
     while not rospy.is_shutdown():
         ct_ros.spin()
